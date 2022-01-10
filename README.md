@@ -1,4 +1,4 @@
-# AWS Lambda と DynamoDB を使用したサーバレスなTodoアプリ
+# AWS Lambda と DynamoDB を使用したサーバレスなTodoアプリ(買い物メモアプリ)
 ※買い物リストとして使用しているため、項目が買い物用になっています。
 
 
