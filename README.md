@@ -11,3 +11,7 @@
 ## Image
 ![application](https://user-images.githubusercontent.com/84375912/148714825-4c1becf9-71ea-473e-ac6d-a9d586a7855a.png)
 
+
+## 参考
+https://aws.amazon.com/jp/getting-started/hands-on/build-web-app-s3-lambda-api-gateway-dynamodb/
+
