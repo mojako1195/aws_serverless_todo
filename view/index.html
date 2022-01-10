@@ -4,9 +4,201 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo</title>
+    <title>買い物リスト</title>
+    <style>
+      h2,
+      label,
+      button {
+        color: #ff9900;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+      input,
+      select {
+        color: #232f3e;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+      .list {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        margin-top: 2px !important;
+      }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <script>
+      var callSetTodoAPI = (title, num) => {
+        if (!title || !num) {
+          alert("すべて入力してください。");
+          return false;
+        }
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({ title: title, num: num });
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        // setTodoFunctionを呼び出し
+        fetch("your setTodoFunction URL", requestOptions)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error();
+            }
+            var titleItem = document.getElementById("title");
+            var numItem = document.getElementById("num");
+
+            titleItem.value = "";
+            numItem.selectedIndex = -1;
+            return response.text();
+          })
+          .then((result) => {
+            callGetTodoAPI();
+          })
+          .catch((error) => console.log("error", error));
+      };
+
+      // GET
+      var callGetTodoAPI = () => {
+        // getTodoFunctionを呼び出し
+        fetch("your getTodoFunction URL")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error();
+            }
+            return response.json();
+          })
+          .then((json) => {
+            updateTodoList(json);
+          })
+          .catch((error) => console.log("error", error));
+      };
+
+      // DELETE
+      var callDeleteTodoAPI = (id) => {
+        if (!id) {
+          alert("項目が見つかりませんでした。");
+          return false;
+        }
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({ id: id });
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        // deleteTodoFunctionを呼び出し
+        fetch("your deleteTodoFunction URL", requestOptions)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error();
+            }
+            return response.text();
+          })
+          .then((result) => {
+            callGetTodoAPI();
+          })
+          .catch((error) => console.log("error", error));
+      };
+
+      function updateTodoList(list) {
+        var lists = document.getElementById("lists");
+        lists.innerHTML = "";
+        list.forEach((element) => {
+          console.log(element);
+          lists.insertAdjacentHTML(
+            "afterbegin",
+            '<div class="list col-7">' +
+              element.title +
+              '</div><div class="list col-3">' +
+              element.num +
+              '個</div><div class="list col-2">' +
+              '<button type="button" onclick="callDeleteTodoAPI(\'' +
+              element.ID +
+              "')\">削除</button>" +
+              "</div>"
+          );
+        });
+      }
+      window.onload = function () {
+        // ページ表示後実行したい処理
+        callGetTodoAPI();
+      };
+    </script>
   </head>
   <body>
-    Todo
+    <form>
+      <div class="row text-center">
+        <div class="col-xs-2">
+          <label>買うもの</label>
+        </div>
+        <div class="col-xs-4">
+          <input type="text" id="title" />
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-xs-2">
+          <label>個数</label>
+        </div>
+        <div class="col-xs-4">
+          <select name="num" id="num">
+            <option value="">--選択してください。--</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+      </div>
+      <br />
+      <div class="row mt-3 text-center">
+        <div class="col">
+          <button
+            type="button"
+            onclick="callSetTodoAPI(document.getElementById('title').value,document.getElementById('num').value)"
+          >
+            追加
+          </button>
+        </div>
+      </div>
+    </form>
+    <br />
+    <br />
+    <div class="row text-center">
+      <div class="col-xs-1">
+        <h2>一覧</h2>
+      </div>
+      <div class="col-xs-1">
+        <button type="button" onclick="callGetTodoAPI()">
+          <small>更新</small>
+        </button>
+      </div>
+    </div>
+    <div id="lists" class="row text-center"></div>
+    <!-- bootstrap JS-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
