@@ -9,5 +9,5 @@
 ・AWS Lambda  
 ・Amazon DynamoDB
 ## Image
-![application](https://user-images.githubusercontent.com/84375912/148712985-081d8e2d-e8f4-44ca-b93c-9fa3c67b8441.png)
+![application](https://user-images.githubusercontent.com/84375912/148714825-4c1becf9-71ea-473e-ac6d-a9d586a7855a.png)
 
